@@ -24,46 +24,45 @@ public class IrisService {
 
     public Iris addIris(Iris iris) { //add an iris to the list
         // TODO: Create validation in case iris is null.
-        if (iris.equals(null)) {
+        if (iris == null) {
             System.out.println("Iris cannot be null");
+            throw new NullPointerException("Iris cannot be nulll");
         }
         // TODO: Create validation to ensure unique ID;
 //        Optional<Iris> optIris = irisList.stream().filter(e->e.getId().equals(iris.getId())).findFirst();
 //        if (optIris.isPresent()){
 //            System.out.println("This Iris ID is already in the list, select another one");
 //        }
-        Iris findIris = findBy(iris.getId());
-        if (findIris == null) {
-            irisList.add(iris);
-        }
-
-        return irisList.get(irisList.size() - 1);
+        irisList.add(iris);
+        return findBy(iris.getId());
     }
 
 
-    public Iris updateIris(Iris iris) {  //updating an iris in the list
+    public Iris updateIris(Iris iris,Integer id) {  //updating an iris in the list
 
         Iris zeroIris = new Iris(0, 0.0, 0.0, 0.0, 0.0, " ");
 //        TODO: Validate iris is NOT null
-        if (iris.equals(null)) {
+        if (iris == null) {
             System.out.println("Iris cannot be null");
-            System.exit(0);
+            throw new NullPointerException("Iris cannot be null");
         } else if (iris.equals(zeroIris)) {
             System.out.println("Iris cannot be zero");
-            System.exit(0);
+            throw new IllegalArgumentException("Id must be valid");
+        } else if (!iris.getId().equals(id)) {
+            throw new IllegalArgumentException("Id does not match");
         }
 
 //        TODO: Check if incoming iris is present before we update (store idx if present)
         Optional<Iris> optIris = irisList.stream().filter(e -> e.getId().equals(iris.getId())).findFirst();
-        if (optIris.isPresent()) {
+        if (!optIris.isPresent()) {
             System.out.println("This Iris ID is already in the list, select another one");
-            System.exit(0);
+            throw new NullPointerException("Iris cannot be null");
         }
-        Iris newIris = new Iris();
-        newIris.setId(iris.getId());        // example of updating an attribute;
-        int idx= irisList.indexOf(iris);
-        irisList.set(idx, newIris);
-        return newIris;
+        int idx = irisList.indexOf(optIris.get());
+        // example of updating an attribute;
+
+        irisList.set(idx, iris);
+        return findBy(iris.getId());
     }
 
     public Iris deleteIris(Integer id) { //removing iris from list, by id

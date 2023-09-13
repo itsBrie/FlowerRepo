@@ -4,32 +4,44 @@ package com.brie.flower.controller;
 import com.brie.flower.model.Iris;
 import com.brie.flower.service.IrisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping(value="/iris")
+@RequestMapping(value = "/iris")
 public class IrisController {
 
     @Autowired
     private IrisService service;
 
+    //localhost:8080/iris/pring
+    @GetMapping("/ping")
+    public String homepage() {
+        ///CODE
+        return "RESPONSE IS GOOD";
+    }
 
-@GetMapping("/ping")
-    public String homepage(){
-    ///CODE
-    return "RESPONSE IS GOOD";
-}
-
-    @RequestMapping(value = "/", produces ="application/json", method = RequestMethod.GET)
+    //localhost:8080/iris/all
+    @RequestMapping(value = "/all", produces = "application/json", method = RequestMethod.GET)
     public List<Iris> findAllIrises() {
         return service.findAll();
     }
+@RequestMapping(value="/all/{id}",method=RequestMethod.GET)
+    public Iris findBy(@PathVariable(value="id",required = true) Integer id){
+        return service.findBy(id);
+}
+@RequestMapping(value = "/all",method = RequestMethod.POST)
+public Iris addIris(@RequestBody Iris iris){
+        return service.addIris(iris);
+}
+@RequestMapping(value="/all/{id}",method =RequestMethod.POST)
+public Iris updateIris(@PathVariable(value="id",required = true)Integer id, @RequestBody Iris iris){
+        return service.updateIris(iris,id);
+}
+
+
 
 
 /**

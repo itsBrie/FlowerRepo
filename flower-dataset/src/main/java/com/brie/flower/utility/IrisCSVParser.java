@@ -12,7 +12,7 @@ import java.util.Scanner;
 //this class handles reading the file and putting it in a list
 //this will get called when the program begins
 public class IrisCSVParser {
-    private static List list = Collections.synchronizedList(new ArrayList<>());
+    private static List<Iris> list = Collections.synchronizedList(new ArrayList<>());
     private static final String IRIS_CSV = "src/main/resources/Iris.csv";
     private static IrisCSVParser instance;
 
